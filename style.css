@@ -263,10 +263,7 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
 .sources::-webkit-scrollbar{display:none}
 .sources button{flex:none;border:0;background:transparent;border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
 .sources button[aria-checked="true"]{background:linear-gradient(180deg,#fff,#dff3ff);color:var(--aqua-deep);box-shadow:0 2px 6px -2px rgba(0,60,120,.4)}
-.live-note{display:flex;align-items:center;gap:8px;margin:-6px 0 0;font-size:13px;font-weight:700;color:var(--ink-soft)}
 .presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.amp-btn{margin-left:auto}
-.amp-btn[aria-pressed="false"]{opacity:.6;background:linear-gradient(180deg,#f3f5f7,#dfe5ea)}
 
 /* ---------- 3D ---------- */
 .stage3d{position:relative;height:min(68vh,600px);min-height:380px;
@@ -300,7 +297,7 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
 .specs dd{margin:0;font-size:15px}
 
 /* ---------- shops ---------- */
-.shops{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.shops{display:grid;grid-template-columns:minmax(0,560px);gap:18px}
 .shop{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"flag name" "flag where" "go go";gap:2px 16px;
   padding:24px 26px;border-radius:26px;text-decoration:none;overflow:hidden;border:1px solid rgba(255,255,255,.85);
   box-shadow:var(--shadow), inset 0 1px 0 #fff;transition:transform .15s}
@@ -308,7 +305,6 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
 .shop > *{position:relative}
 .shop:hover{transform:translateY(-2px)}
 .shop-reverb{background:linear-gradient(180deg,#8fe4ff,#2bb0ee 60%,#1288d6);color:#fff}
-.shop-base{background:linear-gradient(180deg,#d6ff9a,#8fdc33 60%,#5cb316);color:#123d00}
 .shop-flag{grid-area:flag;font-size:40px;align-self:center}
 .shop-name{grid-area:name;font-size:28px;font-weight:800;line-height:1.1}
 .shop-where{grid-area:where;font-size:14px;opacity:.95}
@@ -332,8 +328,7 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
   .lab{grid-template-columns:1fr;gap:14px}
   .lab-side{display:contents}
   .transport{order:-3;justify-content:center}
-  .live-note{order:-2;margin:0}
-  .water{order:-1;height:120px}
+    .water{order:-1;height:120px}
   .lab-pedal{order:0}
   .presets{order:1}
   .lab-pedal .pedal{max-width:240px}
@@ -362,8 +357,7 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
   .lab-pedal .pedal{max-width:210px}
   .block{padding-top:56px}
   .orb{width:56px;height:56px}
-  .amp-btn{margin-left:0}
-}
+  }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .cloud,.bubbles i,.spark{animation:none}

@@ -4,8 +4,7 @@
 
 // Shop links: fill in when the listings go live. Empty = "Coming soon".
 const LINKS = {
-  reverb: '',
-  base: '',
+  reverb: 'https://reverb.com/shop/aeroviewaudio',
 };
 
 /* ---------------- shared state (read by pedal3d.js) ---------------- */
@@ -22,8 +21,7 @@ const JA = {
   'hero.kind': 'アナログ・コーラス／ビブラート',
   'hero.cta.play': '試聴', 'hero.cta.buy': '購入',
   'play.title': '音', 'play.window': 'シミュレーター',
-  'src.a': 'リフ1', 'src.b': 'リフ2', 'src.arp': 'アルペジオ', 'src.chords': 'コード', 'src.long': 'ロングトーン', 'src.live': '自分のギター',
-  'src.liveNote': 'オーディオIF＋ヘッドホン',
+  'src.a': 'リフ1', 'src.b': 'リフ2', 'src.arp': 'アルペジオ', 'src.chords': 'コード', 'src.long': 'ロングトーン',
   'preset.shimmer': 'さざ波', 'preset.lagoon': 'ラグーン', 'preset.seasick': '船酔い', 'preset.deep': '深く潜る',
   'model.title': '3D', 'model.loading': '3Dを読み込み中…', 'model.lights': '照明', 'model.spin': '自動回転',
   'model.view.hero': '正面', 'model.view.top': '真上', 'model.view.side': '横', 'model.view.night': '夜',
@@ -39,7 +37,7 @@ const JA = {
   'specs.made.k': '製造', 'specs.made.v': '日本。1台ずつ手組み・検査',
   'specs.tba': '消費電流・高さ・重さは各商品ページに記載します。',
   'buy.title': '購入', 'buy.sub': '1台ずつ、シリアル番号つきで出品します。',
-  'buy.reverb': '海外向け・日本から発送・米ドル', 'buy.base': '日本国内向け・円',
+  'buy.reverb': '海外向け・日本から発送・米ドル',
   'buy.open': 'ショップを開く →', 'buy.soon': '準備中',
   'foot.made': '日本で手組み',
   'foot.credits': '音のプレーヤーは回路設計をもとにしたシミュレーションで、実機の録音ではありません。リフはGuitarJam（CC0）のギターDI、アルペジオ・コード・ロングトーンは合成音、キャビネットIRはJester Dyne Brutal IR Pack（CC0）。3D：three.js（MIT）。',
@@ -91,7 +89,7 @@ window.WWt = t;
 })();
 
 /* ---------------- shop links ---------------- */
-for (const key of ['reverb', 'base']) {
+for (const key of ['reverb']) {
   const a = document.getElementById('shop-' + key);
   if (LINKS[key]) a.href = LINKS[key];
   else {
@@ -248,16 +246,11 @@ document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('clic
   touched();
 }));
 
-const ampBtn = document.getElementById('ampBtn');
-ampBtn.addEventListener('click', () => {
-  ampBtn.setAttribute('aria-pressed', String(ampBtn.getAttribute('aria-pressed') !== 'true'));
-  engine.update();
-});
 
 
 /* ---------------- audio engine ---------------- */
 const engine = {
-  ctx: null, playing: false, starting: false, src: 'a', buffers: {}, loading: {}, node: null, liveStream: null,
+  ctx: null, playing: false, starting: false, src: 'a', buffers: {}, loading: {}, node: null,
   async init() {
     if (this.ctx) return;
     const C = window.AudioContext || window.webkitAudioContext;
@@ -281,16 +274,18 @@ const engine = {
     n.input.connect(n.pre).connect(n.delay).connect(n.sat).connect(n.post).connect(n.post2).connect(n.wet);
     n.mix = ctx.createGain();
     n.dry.connect(n.mix); n.wet.connect(n.mix);
-    // clean amp + cab
+    // always through a clean amp → speaker cabinet (IR) → a small room
     n.ampIn = ctx.createGain(); n.ampIn.gain.value = 0.9;
     n.amp = ctx.createWaveShaper(); n.amp.curve = ampCurve(); n.amp.oversample = '2x';
     n.cab = ctx.createConvolver();
-    n.cabGain = ctx.createGain(); n.cabGain.gain.value = 0.9;
-    n.direct = ctx.createGain();
+    n.cabGain = ctx.createGain(); n.cabGain.gain.value = 2.6;
     n.mix.connect(n.ampIn).connect(n.amp).connect(n.cab).connect(n.cabGain);
-    n.mix.connect(n.direct);
+    n.room = ctx.createConvolver();
+    n.room.buffer = roomIR(ctx);
+    n.roomGain = ctx.createGain(); n.roomGain.gain.value = 0.22;
+    n.cabGain.connect(n.room).connect(n.roomGain);
     n.out = ctx.createGain(); n.out.gain.value = 0.0;
-    n.cabGain.connect(n.out); n.direct.connect(n.out);
+    n.cabGain.connect(n.out); n.roomGain.connect(n.out);
     n.analyser = ctx.createAnalyser(); n.analyser.fftSize = 1024;
     n.out.connect(n.analyser);
     n.out.connect(ctx.destination);
@@ -315,9 +310,6 @@ const engine = {
     const w = on ? map.wet(k.dive) : 0;
     set(n.wet.gain, w * 1.35);
     set(n.dry.gain, 1 - w);
-    const amp = ampBtn.getAttribute('aria-pressed') === 'true';
-    set(n.cabGain.gain, amp ? 2.6 : 0);
-    set(n.direct.gain, amp ? 0 : 0.8);
   },
   async start() {
     this.starting = true;
@@ -325,12 +317,11 @@ const engine = {
       await this.init();
       if (this.ctx.state !== 'running') await this.ctx.resume();
       await this.connectSource();
-      this.n.out.gain.setTargetAtTime(this.src === 'live' ? 0.9 : 0.75, this.ctx.currentTime, 0.04);
+      this.n.out.gain.setTargetAtTime(0.7, this.ctx.currentTime, 0.04);
       this.playing = true;
     } catch (err) {
       console.warn(err);
       this.playing = false;
-      if (this.src === 'live') selectSource('a', true);
     }
     this.starting = false;
     updatePlayButton();
@@ -342,35 +333,20 @@ const engine = {
     const node = this.node;
     setTimeout(() => { try { node && node.stop && node.stop(); } catch (e) {} if (node && node.disconnect) node.disconnect(); }, 200);
     this.node = null;
-    this.stopLive();
     this.playing = false;
     updatePlayButton();
   },
   async connectSource() {
     const src = this.src;
-    let next;
-    if (src === 'live') {
-      if (!this.liveStream) {
-        this.liveStream = await navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
-        });
-      }
-      next = this.ctx.createMediaStreamSource(this.liveStream);
-    } else {
-      const buf = await this.buffer(src);
-      if (src !== this.src) return;                  // another source was picked while loading
-      this.stopLive();
-      next = this.ctx.createBufferSource();
-      next.buffer = buf;
-      next.loop = true;
-      next.start();
-    }
+    const buf = await this.buffer(src);
+    if (src !== this.src) return;                    // another source was picked while loading
+    const next = this.ctx.createBufferSource();
+    next.buffer = buf;
+    next.loop = true;
+    next.start();
     if (this.node) { try { this.node.stop && this.node.stop(); } catch (e) {} this.node.disconnect(); }
     this.node = next;
     this.node.connect(this.n.input);
-  },
-  stopLive() {
-    if (this.liveStream) { this.liveStream.getTracks().forEach(tr => tr.stop()); this.liveStream = null; }
   },
 };
 
@@ -386,6 +362,24 @@ function levelRms(buf, rmsTarget, peakMax) {
   if (!rms) return;
   const g = Math.min(rmsTarget / rms, peakMax / p);
   for (let c = 0; c < buf.numberOfChannels; c++) { const d = buf.getChannelData(c); for (let i = 0; i < d.length; i++) d[i] *= g; }
+}
+// A small, slightly dark room: a few early reflections, then a decaying noise tail
+// (about 0.5 s to fade), decorrelated left/right so the amp sounds like it is in a room.
+function roomIR(ctx) {
+  const sr = ctx.sampleRate, len = Math.round(sr * 0.9);
+  const ir = ctx.createBuffer(2, len, sr);
+  const early = [[0.007, 0.5], [0.013, 0.35], [0.019, 0.3], [0.027, 0.22], [0.034, 0.18]];
+  for (let c = 0; c < 2; c++) {
+    const d = ir.getChannelData(c);
+    let lp = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / sr;
+      lp += ((Math.random() * 2 - 1) - lp) * 0.35;        // darken the tail
+      d[i] = t < 0.012 ? 0 : lp * Math.exp(-t / 0.075) * 0.5;
+    }
+    for (const [tt, g] of early) d[Math.round((tt + c * 0.0017) * sr)] += g * (c ? -1 : 1);
+  }
+  return ir;
 }
 function satCurve() {
   const c = new Float32Array(1024);
@@ -409,11 +403,9 @@ const seg = document.getElementById('sourceSeg');
 function selectSource(src, quiet) {
   engine.src = src;
   seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.src === src)));
-  document.getElementById('liveNote').hidden = src !== 'live';
   if (!quiet) { stopNudge(); engine.start(); }
 }
 seg.addEventListener('click', e => { const b = e.target.closest('button'); if (b) selectSource(b.dataset.src); });
-if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) seg.querySelector('[data-src="live"]').hidden = true;
 
 /* ---------------- water visual ---------------- */
 // The water surface shows the settings: level = DIVE, wobble = DEPTH, speed = FLOW,

@@ -23,7 +23,6 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></symbol>
   <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"/></symbol>
-  <symbol id="i-phones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="4.5" height="7" rx="1.8" fill="currentColor"/><rect x="16.5" y="14" width="4.5" height="7" rx="1.8" fill="currentColor"/></symbol>
   <symbol id="i-orbit" viewBox="0 0 48 24"><ellipse cx="24" cy="12" rx="21" ry="8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="70 30"/><path d="M41 3l4 5-6 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 <div class="sky" aria-hidden="true">
@@ -110,17 +109,14 @@
               <button type="button" role="radio" aria-checked="false" data-src="arp"><span data-i18n="src.arp">Arpeggio</span></button>
               <button type="button" role="radio" aria-checked="false" data-src="chords"><span data-i18n="src.chords">Chords</span></button>
               <button type="button" role="radio" aria-checked="false" data-src="long"><span data-i18n="src.long">Long notes</span></button>
-              <button type="button" role="radio" aria-checked="false" data-src="live"><span data-i18n="src.live">Your guitar</span></button>
             </div>
           </div>
-          <p class="live-note" id="liveNote" hidden><svg class="ico"><use href="#i-phones"/></svg><span data-i18n="src.liveNote">Audio interface + headphones</span></p>
 
           <div class="presets" role="group" aria-label="Presets">
             <button type="button" class="pill" data-preset="shimmer"><span data-i18n="preset.shimmer">Ripple</span></button>
             <button type="button" class="pill" data-preset="lagoon"><span data-i18n="preset.lagoon">Lagoon</span></button>
             <button type="button" class="pill" data-preset="seasick"><span data-i18n="preset.seasick">Seasick</span></button>
             <button type="button" class="pill" data-preset="deep"><span data-i18n="preset.deep">Deep dive</span></button>
-            <button type="button" class="pill amp-btn" id="ampBtn" aria-pressed="true" title="Clean amp + cabinet"><span>AMP</span></button>
           </div>
         </div>
       </div>
@@ -195,12 +191,6 @@
         <span class="shop-flag">🌏</span>
         <span class="shop-name">Reverb</span>
         <span class="shop-where" data-i18n="buy.reverb">Worldwide · ships from Japan · USD</span>
-        <span class="shop-go"><span class="shop-live" data-i18n="buy.open">Open shop →</span><span class="shop-soon" data-i18n="buy.soon">Coming soon</span></span>
-      </a>
-      <a class="shop shop-base" id="shop-base" href="#" target="_blank" rel="noopener">
-        <span class="shop-flag">🗾</span>
-        <span class="shop-name">BASE</span>
-        <span class="shop-where" data-i18n="buy.base">Japan · 日本国内向け · JPY</span>
         <span class="shop-go"><span class="shop-live" data-i18n="buy.open">Open shop →</span><span class="shop-soon" data-i18n="buy.soon">Coming soon</span></span>
       </a>
     </div>
