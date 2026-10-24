@@ -41,7 +41,6 @@ const JA = {
   'specs.build.k': '製造', 'specs.build.v': '日本で1台ずつ手組み。出荷前に全台を動作検査',
   'specs.tba': '消費電流・高さ・重さは、実測してから追記します。',
   'buy.title': '購入', 'buy.sub': '1台ずつ、シリアル番号つきで出品します。',
-  'buy.reverb': '海外向け・日本から発送・米ドル',
   'buy.open': 'ショップを開く →', 'buy.soon': '準備中',
   'foot.made': '日本で手組み',
   'foot.credits': '音のプレーヤーは回路設計をもとにしたシミュレーションで、実機の録音ではありません。ギターのフレーズは合成音、キャビネットIRはJester Dyne Brutal IR Pack（CC0）。3D：three.js（MIT）。',

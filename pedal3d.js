@@ -214,7 +214,7 @@
     }
     pedal.add(jack(-32.6, 17, Math.PI));  // OUT (left)
     pedal.add(jack(32.6, 17, 0));         // IN (right)
-    const dc = jack(0, -60.6, Math.PI / 2); dc.position.y = -10; dc.scale.setScalar(0.85); pedal.add(dc);
+    const dc = jack(0, -60.6, Math.PI / 2); dc.position.y = -16; dc.scale.setScalar(0.85); pedal.add(dc);   // same height as the DC jack body in the layout (z = −16)
 
     // ---- LEDs ----
     const leds = [];
