@@ -144,6 +144,10 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
 .logo-slot.rippling .hero-logo{visibility:hidden}
 .logo-slot[data-logo="hero"]{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .kind{font-size:17px;font-weight:700;color:var(--ink-soft);margin:14px 0 28px;letter-spacing:.02em}
+.kind .maker{display:block;font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--aqua-deep);margin-bottom:2px}
+.foot a{color:var(--aqua-deep);text-decoration:none;font-weight:700}
+.foot a:hover{text-decoration:underline}
+.foot-maker{color:var(--ink)}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero-media{position:relative;justify-self:center;width:min(360px,100%)}
 .device{position:relative;border-radius:34px;padding:10px;
