@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Water Wobble — analog chorus / vibrato</title>
+<meta name="description" content="Water Wobble: an analog BBD chorus / vibrato in a translucent blue shell that lights up when you switch it on. Play with the knobs in your browser and spin it in 3D.">
+<meta name="theme-color" content="#7fd3ff">
+<meta property="og:title" content="Water Wobble — your guitar, underwater">
+<meta property="og:description" content="Analog BBD chorus / vibrato. Turn the knobs in your browser, spin it in 3D.">
+<meta property="og:image" content="https://dim7.jp/pedals/assets/hero.jpg">
+<meta property="og:url" content="https://dim7.jp/pedals/">
+<link rel="canonical" href="https://dim7.jp/pedals/">
+<link rel="preload" as="image" href="assets/logo.webp" type="image/webp">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"/></symbol>
+  <symbol id="i-phones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="4.5" height="7" rx="1.8" fill="currentColor"/><rect x="16.5" y="14" width="4.5" height="7" rx="1.8" fill="currentColor"/></symbol>
+  <symbol id="i-orbit" viewBox="0 0 48 24"><ellipse cx="24" cy="12" rx="21" ry="8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="70 30"/><path d="M41 3l4 5-6 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="sky" aria-hidden="true">
+  <div class="sun"></div>
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <div class="bubbles"></div>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="#top" aria-label="Water Wobble"><span class="logo-slot" data-logo="brand"><img class="brand-logo" src="assets/logo.webp" alt="water wobble" width="1200" height="622"></span></a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#play" data-i18n="nav.play">Sound</a>
+    <a href="#model" data-i18n="nav.model">3D</a>
+    <a href="#real" data-i18n="nav.real">Video</a>
+    <a href="#specs" data-i18n="nav.specs">Specs</a>
+    <a href="#buy" class="nav-buy" data-i18n="nav.buy">Buy</a>
+  </nav>
+  <button class="lang" id="lang" type="button" aria-label="Language">日本語</button>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-copy">
+            <h1><span class="logo-slot" data-logo="hero"><img class="hero-logo" src="assets/logo.webp" alt="water wobble" width="1200" height="622" fetchpriority="high"></span></h1>
+      <p class="kind" data-i18n="hero.kind">Analog chorus / vibrato</p>
+      <div class="cta">
+        <a class="gel gel-aqua" href="#play"><span class="gel-ico">▶</span><span data-i18n="hero.cta.play">Listen</span></a>
+        <a class="gel gel-lime" href="#buy"><span data-i18n="hero.cta.buy">Buy</span></a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="device">
+        <video src="assets/hero.mp4" poster="assets/hero.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Water Wobble glowing on a desk"></video>
+      </div>
+      <div class="device-reflect" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Simulator -->
+  <section class="block" id="play">
+    <div class="block-head">
+      <h2 data-i18n="play.title">Sound</h2>
+    </div>
+
+    <div class="window">
+      <div class="titlebar">
+        <span class="orbs" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="title" data-i18n="play.window">Simulator</span>
+      </div>
+
+      <div class="lab" id="lab" data-on="true">
+        <div class="lab-pedal">
+          <button type="button" class="bigswitch" id="bigSwitch" role="switch" aria-checked="true" aria-label="Effect on / off">
+            <span class="bs-label bs-off">OFF</span><span class="bs-label bs-on">ON</span><i class="bs-thumb" aria-hidden="true"></i>
+          </button>
+          <div class="pedal" id="pedal" data-on="true">
+            <div class="pedal-shell"></div>
+            <img class="pedal-art" src="assets/face.webp" alt="" draggable="false">
+            <div class="led" style="--x:16.9%;--y:14.6%"></div>
+            <div class="led" style="--x:83.1%;--y:14.6%"></div>
+            <div class="led" style="--x:16.9%;--y:85.4%"></div>
+            <div class="led" style="--x:83.1%;--y:85.4%"></div>
+            <div class="knob" data-k="clear" style="--x:26.15%;--y:14.17%" role="slider" tabindex="0" aria-label="CLEAR" aria-valuemin="0" aria-valuemax="100"><i class="chev up"></i><i class="chev down"></i><div class="knob-cap"><span class="knob-line"></span></div><output class="bubble"></output></div>
+            <div class="knob" data-k="flow" style="--x:73.85%;--y:14.17%" role="slider" tabindex="0" aria-label="FLOW" aria-valuemin="0" aria-valuemax="100"><i class="chev up"></i><i class="chev down"></i><div class="knob-cap"><span class="knob-line"></span></div><output class="bubble"></output></div>
+            <div class="knob" data-k="dive" style="--x:26.15%;--y:37.5%" role="slider" tabindex="0" aria-label="DIVE" aria-valuemin="0" aria-valuemax="100"><i class="chev up"></i><i class="chev down"></i><div class="knob-cap"><span class="knob-line"></span></div><output class="bubble"></output></div>
+            <div class="knob" data-k="depth" style="--x:73.85%;--y:37.5%" role="slider" tabindex="0" aria-label="DEPTH" aria-valuemin="0" aria-valuemax="100"><i class="chev up"></i><i class="chev down"></i><div class="knob-cap"><span class="knob-line"></span></div><output class="bubble"></output></div>
+            <span class="tap-ring" aria-hidden="true"></span>
+            <button class="footswitch" id="footswitch" type="button" aria-pressed="true" aria-label="Footswitch: effect on / off"></button>
+          </div>
+        </div>
+
+        <div class="lab-side">
+          <div class="water" id="water">
+            <canvas id="waterCanvas" aria-hidden="true"></canvas>
+            <div class="state-badge" aria-live="polite"><i class="state-led"></i><span id="stateLabel">ON</span></div>
+          </div>
+
+          <div class="transport">
+            <button class="orb" id="playBtn" type="button" aria-label="Play"><svg class="ico i-play"><use href="#i-play"/></svg><svg class="ico i-stop"><use href="#i-stop"/></svg></button>
+            <div class="sources" role="radiogroup" aria-label="Source" id="sourceSeg">
+              <button type="button" role="radio" aria-checked="true" data-src="a"><span data-i18n="src.a">Riff 1</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="b"><span data-i18n="src.b">Riff 2</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="arp"><span data-i18n="src.arp">Arpeggio</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="chords"><span data-i18n="src.chords">Chords</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="long"><span data-i18n="src.long">Long notes</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="live"><span data-i18n="src.live">Your guitar</span></button>
+            </div>
+          </div>
+          <p class="live-note" id="liveNote" hidden><svg class="ico"><use href="#i-phones"/></svg><span data-i18n="src.liveNote">Audio interface + headphones</span></p>
+
+          <div class="presets" role="group" aria-label="Presets">
+            <button type="button" class="pill" data-preset="shimmer"><span data-i18n="preset.shimmer">Ripple</span></button>
+            <button type="button" class="pill" data-preset="lagoon"><span data-i18n="preset.lagoon">Lagoon</span></button>
+            <button type="button" class="pill" data-preset="seasick"><span data-i18n="preset.seasick">Seasick</span></button>
+            <button type="button" class="pill" data-preset="deep"><span data-i18n="preset.deep">Deep dive</span></button>
+            <button type="button" class="pill amp-btn" id="ampBtn" aria-pressed="true" title="Clean amp + cabinet"><span>AMP</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D -->
+  <section class="block" id="model">
+    <div class="block-head">
+      <h2 data-i18n="model.title">3D</h2>
+    </div>
+    <div class="window window-3d">
+      <div class="titlebar">
+        <span class="orbs" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="title">water_wobble.3d</span>
+      </div>
+      <div class="stage3d" id="stage3d">
+        <canvas id="canvas3d" aria-label="Interactive 3D model of the Water Wobble pedal"></canvas>
+        <div class="stage-msg" id="msg3d" data-i18n="model.loading">Loading 3D…</div>
+        <div class="gesture" id="gesture3d" aria-hidden="true"><svg class="ico"><use href="#i-orbit"/></svg><span class="g-hand"></span></div>
+        <div class="stage-tools">
+          <button type="button" class="pill" id="v-lights" aria-pressed="true" data-i18n="model.lights">Lights</button>
+          <button type="button" class="pill" id="v-spin" aria-pressed="true" data-i18n="model.spin">Auto-rotate</button>
+          <button type="button" class="pill" data-view="hero" data-i18n="model.view.hero">Front</button>
+          <button type="button" class="pill" data-view="top" data-i18n="model.view.top">Top</button>
+          <button type="button" class="pill" data-view="side" data-i18n="model.view.side">Side</button>
+          <button type="button" class="pill" data-view="night" data-i18n="model.view.night">Night</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real footage -->
+  <section class="block" id="real">
+    <div class="block-head">
+      <h2 data-i18n="real.title">Video</h2>
+    </div>
+    <div class="reels">
+      <figure class="reel"><video src="assets/clip-day.mp4" poster="assets/clip-day.jpg" muted loop playsinline preload="none"></video></figure>
+      <figure class="reel"><video src="assets/clip-knobs.mp4" poster="assets/clip-knobs.jpg" muted loop playsinline preload="none"></video></figure>
+      <figure class="reel"><video src="assets/clip-glow.mp4" poster="assets/clip-glow.jpg" muted loop playsinline preload="none"></video></figure>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="block" id="specs">
+    <div class="block-head">
+      <h2 data-i18n="specs.title">Specs</h2>
+    </div>
+    <div class="glass specs">
+      <dl>
+        <div><dt data-i18n="specs.type.k">Type</dt><dd data-i18n="specs.type.v">Analog chorus / vibrato (bucket-brigade delay chip)</dd></div>
+        <div><dt data-i18n="specs.ctrl.k">Controls</dt><dd data-i18n="specs.ctrl.v">FLOW, DEPTH, DIVE, CLEAR, on/off footswitch</dd></div>
+        <div><dt data-i18n="specs.light.k">Lights</dt><dd data-i18n="specs.light.v">Four internal LEDs, on when the effect is engaged</dd></div>
+        <div><dt data-i18n="specs.power.k">Power</dt><dd data-i18n="specs.power.v">9V DC, center negative (adapter not included)</dd></div>
+        <div><dt data-i18n="specs.io.k">In / Out</dt><dd data-i18n="specs.io.v">Mono in, mono out (¼″ jacks on the sides)</dd></div>
+        <div><dt data-i18n="specs.case.k">Enclosure</dt><dd data-i18n="specs.case.v">Hammond 1591 translucent blue polycarbonate, 120 × 65 mm</dd></div>
+        <div><dt data-i18n="specs.made.k">Made in</dt><dd data-i18n="specs.made.v">Japan — hand-assembled and checked one by one</dd></div>
+      </dl>
+      <p class="fineprint" data-i18n="specs.tba">Current draw, height and weight will be listed on each product page.</p>
+    </div>
+  </section>
+
+  <!-- Buy -->
+  <section class="block" id="buy">
+    <div class="block-head">
+      <h2 data-i18n="buy.title">Buy</h2>
+      <p class="sub" data-i18n="buy.sub">Each pedal is listed one at a time with its own serial number.</p>
+    </div>
+    <div class="shops">
+      <a class="shop shop-reverb" id="shop-reverb" href="#" target="_blank" rel="noopener">
+        <span class="shop-flag">🌏</span>
+        <span class="shop-name">Reverb</span>
+        <span class="shop-where" data-i18n="buy.reverb">Worldwide · ships from Japan · USD</span>
+        <span class="shop-go"><span class="shop-live" data-i18n="buy.open">Open shop →</span><span class="shop-soon" data-i18n="buy.soon">Coming soon</span></span>
+      </a>
+      <a class="shop shop-base" id="shop-base" href="#" target="_blank" rel="noopener">
+        <span class="shop-flag">🗾</span>
+        <span class="shop-name">BASE</span>
+        <span class="shop-where" data-i18n="buy.base">Japan · 日本国内向け · JPY</span>
+        <span class="shop-go"><span class="shop-live" data-i18n="buy.open">Open shop →</span><span class="shop-soon" data-i18n="buy.soon">Coming soon</span></span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="logo-slot" data-logo="foot"><img class="foot-logo" src="assets/logo.webp" alt="water wobble" width="1200" height="622" loading="lazy"></span>
+  <p>dim7.jp/pedals · <span data-i18n="foot.made">Hand-assembled in Japan</span></p>
+  <p class="credits" data-i18n="foot.credits">The sound player is a simulation based on the circuit design, not a recording. Riffs are guitar DI from GuitarJam (CC0); arpeggio, chords and long notes are synthesized; cabinet IR from Jester Dyne Brutal IR Pack (CC0). 3D: three.js (MIT).</p>
+</footer>
+
+<script src="assets/vendor/three.min.js" defer></script>
+<script src="app.js" defer></script>
+<script src="logo.js" defer></script>
+<script src="pedal3d.js" defer></script>
+</body>
+</html>
