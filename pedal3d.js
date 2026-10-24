@@ -68,6 +68,7 @@
     scene.environment = envDay;
 
     const hemi = new THREE.HemisphereLight(0xdff4ff, 0x6a8fb0, 0.6);
+    const fill = new THREE.PointLight(0xffffff, 2600, 160, 2); fill.position.set(0, -10, 0); scene.add(fill);   // lights the parts inside the shell
     scene.add(hemi);
     const sun = new THREE.DirectionalLight(0xffffff, 1.6);
     sun.position.set(120, 260, 140);
@@ -93,8 +94,8 @@
     caseGeo.rotateX(-Math.PI / 2);           // extrude along +y
     caseGeo.translate(0, -(H - bevel) + 3, 0);
     const caseMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1a3bd0, metalness: 0, roughness: 0.14, transmission: 0.4, thickness: 8, ior: 1.585,
-      clearcoat: 1, clearcoatRoughness: 0.05, attenuationColor: new THREE.Color(0x0c1f8c), attenuationDistance: 14,
+      color: 0x3a66f2, metalness: 0, roughness: 0.1, transmission: 0.92, thickness: 3, ior: 1.585,
+      clearcoat: 1, clearcoatRoughness: 0.05, attenuationColor: new THREE.Color(0x2448d8), attenuationDistance: 60,
       envMapIntensity: 0.9, side: THREE.FrontSide,
     });
     const shell = new THREE.Mesh(caseGeo, caseMat);
@@ -105,15 +106,59 @@
     lidGeo.rotateX(-Math.PI / 2); lidGeo.translate(0, -H, 0);
     pedal.add(new THREE.Mesh(lidGeo, new THREE.MeshStandardMaterial({ color: 0x0d1c5c, roughness: 0.5, metalness: 0.1 })));
 
-    // PCB seen through the case
-    const pcb = new THREE.Mesh(new THREE.BoxGeometry(52, 1.6, 98), new THREE.MeshStandardMaterial({ color: 0x0b2a3a, roughness: 0.55, metalness: 0.2 }));
-    pcb.position.set(0, -30, 4);
-    pedal.add(pcb);
-    const icMat = new THREE.MeshStandardMaterial({ color: 0x111418, roughness: 0.4 });
-    [[-10, -5, 10, 7], [10, -5, 10, 7], [0, 8, 14, 8], [-12, 22, 8, 6], [12, 22, 8, 6]].forEach(([x, z, w, l]) => {
-      const ic = new THREE.Mesh(new THREE.BoxGeometry(w, 2, l), icMat);
-      ic.position.set(x, -28.2, z); pedal.add(ic);
-    });
+    // ---- inside: board, parts and wiring from the R5 layout (assets/parts.json) ----
+    // Generic shapes only (boxes, cylinders, tubes), seen through the translucent case.
+    const P = (x, y, z) => new THREE.Vector3(x, z, -y);           // layout mm → scene
+    let ledSpots = null;
+    fetch('assets/parts.json').then(r => r.json()).then(data => {
+      const inner = new THREE.Group();
+      const matCache = {};
+      const matFor = name => matCache[name] || (matCache[name] = (() => {
+        const metal = name === 'metal' || name === 'brass' || name === 'lead';
+        return new THREE.MeshStandardMaterial({ color: new THREE.Color(data.mats[name]), metalness: metal ? 0.85 : 0.05, roughness: metal ? 0.35 : 0.6 });
+      })());
+      // PCB: outline extruded, dark solder mask
+      const b = data.board;
+      const shape = new THREE.Shape(b.outline.map(([x, y]) => new THREE.Vector2(x, y)));
+      const pcbGeo = new THREE.ExtrudeGeometry(shape, { depth: b.thickness, bevelEnabled: false });
+      pcbGeo.rotateX(-Math.PI / 2); pcbGeo.translate(0, b.top - b.thickness, 0);
+      inner.add(new THREE.Mesh(pcbGeo, new THREE.MeshStandardMaterial({ color: 0x0f2a33, roughness: 0.45, metalness: 0.15 })));
+      // instanced boxes and cylinders, one draw call per material (and axis)
+      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), sc = new THREE.Vector3();
+      function instanced(geo, items, mat, place) {
+        const mesh = new THREE.InstancedMesh(geo, mat, items.length);
+        items.forEach((it, i) => { place(it); mesh.setMatrixAt(i, m4.compose(P(it[0], it[1], it[2]), q, sc)); });
+        inner.add(mesh);
+      }
+      const byKey = (list, keyOf) => list.reduce((acc, it) => ((acc[keyOf(it)] = acc[keyOf(it)] || []).push(it), acc), {});
+      const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+      const boxGroups = byKey(data.boxes, it => it[7]);
+      for (const mi in boxGroups) instanced(boxGeo, boxGroups[mi], matFor(data.matNames[mi]), it => {
+        q.setFromEuler(e.set(0, it[6] * Math.PI / 180, 0)); sc.set(it[3], it[5], it[4]);
+      });
+      const cylGeo = new THREE.CylinderGeometry(1, 1, 1, 20);
+      const cylGroups = byKey(data.cyls, it => it[6] + ':' + it[5]);
+      for (const key in cylGroups) {
+        const [mi, axis] = key.split(':').map(Number);
+        instanced(cylGeo, cylGroups[key], matFor(data.matNames[mi]), it => {
+          q.setFromEuler(axis === 0 ? e.set(0, 0, Math.PI / 2) : axis === 1 ? e.set(Math.PI / 2, 0, 0) : e.set(0, 0, 0));
+          sc.set(it[3], it[4], it[3]);
+        });
+      }
+      // wires
+      for (const w of data.wires) {
+        const curve = new THREE.CatmullRomCurve3(w.p.map(pt => P(pt[0], pt[1], pt[2])));
+        inner.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 20, w.r, 6), matFor(data.matNames[w.m])));
+      }
+      pedal.add(inner);
+      // LEDs sit where the layout puts them
+      ledSpots = data.spheres.map(sp => P(sp[0], sp[1], sp[2]));
+      leds.forEach((l, i) => {
+        const p = ledSpots[i]; if (!p) return;
+        l.bulb.position.copy(p); l.light.position.set(p.x, p.y + 2, p.z); l.sp.position.set(p.x, p.y + 4, p.z);
+      });
+      needs = true;
+    }).catch(err => console.warn('parts', err));
 
     // top artwork (transparent PNG/WebP) as a decal on the top face
     const tex = new THREE.TextureLoader().load('assets/face.webp', t => { t.colorSpace = THREE.SRGBColorSpace; render(); });
@@ -233,6 +278,7 @@
       stage.classList.toggle('night', n);
       scene.environment = n ? envNight : envDay;
       hemi.intensity = n ? 0.08 : 0.6;
+      fill.intensity = n ? 500 : 2600;
       sun.intensity = n ? 0.15 : 1.6;
       renderer.toneMappingExposure = n ? 1.2 : 1.05;
       shadow.visible = !n;

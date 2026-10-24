@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261024d">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -105,10 +105,10 @@
           <div class="transport">
             <button class="orb" id="playBtn" type="button" aria-label="Play"><svg class="ico i-play"><use href="#i-play"/></svg><svg class="ico i-stop"><use href="#i-stop"/></svg></button>
             <div class="sources" role="radiogroup" aria-label="Source" id="sourceSeg">
-              <button type="button" role="radio" aria-checked="true" data-src="a"><span data-i18n="src.a">Riff 1</span></button>
-              <button type="button" role="radio" aria-checked="false" data-src="b"><span data-i18n="src.b">Riff 2</span></button>
-              <button type="button" role="radio" aria-checked="false" data-src="arp"><span data-i18n="src.arp">Arpeggio</span></button>
+              <button type="button" role="radio" aria-checked="true" data-src="arp"><span data-i18n="src.arp">Arpeggio</span></button>
               <button type="button" role="radio" aria-checked="false" data-src="chords"><span data-i18n="src.chords">Chords</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="riff1"><span data-i18n="src.riff1">Riff 1</span></button>
+              <button type="button" role="radio" aria-checked="false" data-src="riff2"><span data-i18n="src.riff2">Riff 2</span></button>
               <button type="button" role="radio" aria-checked="false" data-src="long"><span data-i18n="src.long">Long notes</span></button>
             </div>
           </div>
@@ -168,16 +168,20 @@
       <h2 data-i18n="specs.title">Specs</h2>
     </div>
     <div class="glass specs">
+      <p class="specs-intro" data-i18n="specs.intro">Water Wobble splits your signal in two. One path stays dry. The other runs through a bucket-brigade delay chip whose delay time is swept up and down, which bends the pitch. DIVE sets the balance: mixed, the two make a chorus; the wobbling path alone is a vibrato.</p>
       <dl>
-        <div><dt data-i18n="specs.type.k">Type</dt><dd data-i18n="specs.type.v">Analog chorus / vibrato (bucket-brigade delay chip)</dd></div>
-        <div><dt data-i18n="specs.ctrl.k">Controls</dt><dd data-i18n="specs.ctrl.v">FLOW, DEPTH, DIVE, CLEAR, on/off footswitch</dd></div>
-        <div><dt data-i18n="specs.light.k">Lights</dt><dd data-i18n="specs.light.v">Four internal LEDs, on when the effect is engaged</dd></div>
-        <div><dt data-i18n="specs.power.k">Power</dt><dd data-i18n="specs.power.v">9V DC, center negative (adapter not included)</dd></div>
-        <div><dt data-i18n="specs.io.k">In / Out</dt><dd data-i18n="specs.io.v">Mono in, mono out (¼″ jacks on the sides)</dd></div>
-        <div><dt data-i18n="specs.case.k">Enclosure</dt><dd data-i18n="specs.case.v">Hammond 1591 translucent blue polycarbonate, 120 × 65 mm</dd></div>
-        <div><dt data-i18n="specs.made.k">Made in</dt><dd data-i18n="specs.made.v">Japan — hand-assembled and checked one by one</dd></div>
+        <div><dt data-i18n="specs.circuit.k">Circuit</dt><dd data-i18n="specs.circuit.v">Analog. A bucket-brigade delay (BBD) chip swept by a triangle-wave LFO.</dd></div>
+        <div><dt data-i18n="specs.flow.k">FLOW</dt><dd data-i18n="specs.flow.v">Speed of the wobble, from a slow drift to a quick shimmer.</dd></div>
+        <div><dt data-i18n="specs.depth.k">DEPTH</dt><dd data-i18n="specs.depth.v">How far the pitch swings.</dd></div>
+        <div><dt data-i18n="specs.dive.k">DIVE</dt><dd data-i18n="specs.dive.v">Dry / wet mix. Low: a chorus under your dry tone. All the way up: wet only, a vibrato.</dd></div>
+        <div><dt data-i18n="specs.clear.k">CLEAR</dt><dd data-i18n="specs.clear.v">Treble of the wobbling path only. Your dry tone is left as it is.</dd></div>
+        <div><dt data-i18n="specs.switch.k">Footswitch</dt><dd data-i18n="specs.switch.v">On / off. Four LEDs inside light up while the effect is on.</dd></div>
+        <div><dt data-i18n="specs.power.k">Power</dt><dd data-i18n="specs.power.v">9V DC, center negative, from a regulated pedal supply (not included).</dd></div>
+        <div><dt data-i18n="specs.jacks.k">Jacks</dt><dd data-i18n="specs.jacks.v">Mono in and out on the sides, power at the top.</dd></div>
+        <div><dt data-i18n="specs.size.k">Size</dt><dd data-i18n="specs.size.v">About 120 × 65 mm (without knobs and jacks).</dd></div>
+        <div><dt data-i18n="specs.build.k">Build</dt><dd data-i18n="specs.build.v">Assembled by hand in Japan. Every unit is function-tested before it ships.</dd></div>
       </dl>
-      <p class="fineprint" data-i18n="specs.tba">Current draw, height and weight will be listed on each product page.</p>
+      <p class="fineprint" data-i18n="specs.tba">Current draw, height and weight will be added once measured.</p>
     </div>
   </section>
 
@@ -202,12 +206,12 @@
   <span class="logo-slot" data-logo="foot"><img class="foot-logo" src="assets/logo.webp" alt="water wobble" width="1200" height="622" loading="lazy"></span>
   <p><strong class="foot-maker">Aeroview Audio</strong> · <span data-i18n="foot.made">Hand-assembled in Japan</span></p>
   <p><a href="https://www.instagram.com/aeroviewaudio/" target="_blank" rel="noopener">Instagram @aeroviewaudio</a> · <a href="https://reverb.com/shop/aeroviewaudio" target="_blank" rel="noopener">Reverb</a></p>
-  <p class="credits" data-i18n="foot.credits">The sound player is a simulation based on the circuit design, not a recording. Riffs are guitar DI from GuitarJam (CC0); arpeggio, chords and long notes are synthesized; cabinet IR from Jester Dyne Brutal IR Pack (CC0). 3D: three.js (MIT).</p>
+  <p class="credits" data-i18n="foot.credits">The sound player is a simulation based on the circuit design, not a recording of the pedal. Guitar phrases are synthesized; cabinet IR from Jester Dyne Brutal IR Pack (CC0). 3D: three.js (MIT).</p>
 </footer>
 
 <script src="assets/vendor/three.min.js" defer></script>
-<script src="app.js" defer></script>
-<script src="logo.js" defer></script>
-<script src="pedal3d.js" defer></script>
+<script src="app.js?v=20261024d" defer></script>
+<script src="logo.js?v=20261024d" defer></script>
+<script src="pedal3d.js?v=20261024d" defer></script>
 </body>
 </html>

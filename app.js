@@ -21,26 +21,30 @@ const JA = {
   'hero.kind': 'アナログ・コーラス／ビブラート',
   'hero.cta.play': '試聴', 'hero.cta.buy': '購入',
   'play.title': '音', 'play.window': 'シミュレーター',
-  'src.a': 'リフ1', 'src.b': 'リフ2', 'src.arp': 'アルペジオ', 'src.chords': 'コード', 'src.long': 'ロングトーン',
+  'src.riff1': 'リフ1', 'src.riff2': 'リフ2', 'src.arp': 'アルペジオ', 'src.chords': 'コード', 'src.long': 'ロングトーン',
   'preset.shimmer': 'さざ波', 'preset.lagoon': 'ラグーン', 'preset.seasick': '船酔い', 'preset.deep': '深く潜る',
   'model.title': '3D', 'model.loading': '3Dを読み込み中…', 'model.lights': '照明', 'model.spin': '自動回転',
   'model.view.hero': '正面', 'model.view.top': '真上', 'model.view.side': '横', 'model.view.night': '夜',
   'model.fail': 'この端末では3D表示を開けませんでした。',
   'real.title': '動画',
   'specs.title': '仕様',
-  'specs.type.k': '種類', 'specs.type.v': 'アナログ・コーラス／ビブラート（BBD＝バケツリレー素子）',
-  'specs.ctrl.k': '操作', 'specs.ctrl.v': 'FLOW・DEPTH・DIVE・CLEAR、ON／OFFのフットスイッチ',
-  'specs.light.k': '照明', 'specs.light.v': '内部に4灯。エフェクトONで点灯',
-  'specs.power.k': '電源', 'specs.power.v': 'DC9V・センターマイナス（アダプター別売）',
-  'specs.io.k': '入出力', 'specs.io.v': 'モノラル入力・モノラル出力（側面に標準ジャック）',
-  'specs.case.k': '筐体', 'specs.case.v': 'Hammond 1591 透明ブルー（ポリカーボネート）、120 × 65 mm',
-  'specs.made.k': '製造', 'specs.made.v': '日本。1台ずつ手組み・検査',
-  'specs.tba': '消費電流・高さ・重さは各商品ページに記載します。',
+  'specs.intro': 'Water Wobbleは、入ってきた音を2つに分けます。片方はそのまま、もう片方はBBD（アナログの遅延素子）を通り、遅れの長さを揺らすことで音程が上下します。DIVEで2つの割合を決め、混ぜればコーラス、揺れた音だけならビブラートになります。',
+  'specs.circuit.k': '回路', 'specs.circuit.v': 'アナログ。BBD（バケツリレー素子）を三角波のLFOで揺らす',
+  'specs.flow.k': 'FLOW', 'specs.flow.v': '揺れの速さ。ゆっくりした漂いから、細かいきらめきまで',
+  'specs.depth.k': 'DEPTH', 'specs.depth.v': '音程が揺れる幅',
+  'specs.dive.k': 'DIVE', 'specs.dive.v': '原音と揺れた音の割合。絞るとコーラス、上げきると揺れた音だけのビブラート',
+  'specs.clear.k': 'CLEAR', 'specs.clear.v': '揺れた音の高音だけを調整。原音はそのまま',
+  'specs.switch.k': 'フットスイッチ', 'specs.switch.v': 'ON／OFF。ONの間は内部の4つのLEDが点灯',
+  'specs.power.k': '電源', 'specs.power.v': 'DC9V・センターマイナス。安定化されたペダル用電源で（別売）',
+  'specs.jacks.k': 'ジャック', 'specs.jacks.v': '入力・出力（モノラル）は側面、電源は上面',
+  'specs.size.k': '大きさ', 'specs.size.v': '約120 × 65 mm（ノブ・ジャックを除く）',
+  'specs.build.k': '製造', 'specs.build.v': '日本で1台ずつ手組み。出荷前に全台を動作検査',
+  'specs.tba': '消費電流・高さ・重さは、実測してから追記します。',
   'buy.title': '購入', 'buy.sub': '1台ずつ、シリアル番号つきで出品します。',
   'buy.reverb': '海外向け・日本から発送・米ドル',
   'buy.open': 'ショップを開く →', 'buy.soon': '準備中',
   'foot.made': '日本で手組み',
-  'foot.credits': '音のプレーヤーは回路設計をもとにしたシミュレーションで、実機の録音ではありません。リフはGuitarJam（CC0）のギターDI、アルペジオ・コード・ロングトーンは合成音、キャビネットIRはJester Dyne Brutal IR Pack（CC0）。3D：three.js（MIT）。',
+  'foot.credits': '音のプレーヤーは回路設計をもとにしたシミュレーションで、実機の録音ではありません。ギターのフレーズは合成音、キャビネットIRはJester Dyne Brutal IR Pack（CC0）。3D：three.js（MIT）。',
   'aria.play': '再生', 'aria.stop': '停止',
 };
 const EN = {};
@@ -120,8 +124,8 @@ const map = {
 };
 const BASE_DELAY = 0.0075;
 const SOURCES = {
-  a: 'assets/riff-a.m4a', b: 'assets/riff-b.m4a',
-  arp: 'assets/phrase-arp.m4a', chords: 'assets/phrase-chords.m4a', long: 'assets/phrase-long.m4a',
+  arp: 'assets/phrase-arp.m4a', chords: 'assets/phrase-chords.m4a',
+  riff1: 'assets/phrase-riff1.m4a', riff2: 'assets/phrase-riff2.m4a', long: 'assets/phrase-long.m4a',
 };
 
 /* ---------------- knobs UI ---------------- */
@@ -164,6 +168,11 @@ function touched() {
 for (const el of knobEls) {
   const k = el.dataset.k;
   let startY = 0, startX = 0, startV = 0, id = null, lastTap = 0;
+  // In-app browsers (Instagram, LINE…) can ignore touch-action and scroll or drag the page
+  // while a knob is turned; cancelling the touch events here keeps the gesture on the knob.
+  const hold = e => { if (e.cancelable) e.preventDefault(); };
+  el.addEventListener('touchstart', hold, { passive: false });
+  el.addEventListener('touchmove', hold, { passive: false });
   el.addEventListener('pointerdown', e => {
     id = e.pointerId; el.setPointerCapture(id);
     startY = e.clientY; startX = e.clientX; startV = WW.knobs[k];
@@ -250,7 +259,7 @@ document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('clic
 
 /* ---------------- audio engine ---------------- */
 const engine = {
-  ctx: null, playing: false, starting: false, src: 'a', buffers: {}, loading: {}, node: null,
+  ctx: null, playing: false, starting: false, src: 'arp', buffers: {}, loading: {}, node: null,
   async init() {
     if (this.ctx) return;
     const C = window.AudioContext || window.webkitAudioContext;
