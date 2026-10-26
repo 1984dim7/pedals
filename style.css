@@ -315,6 +315,9 @@ main{max-width:1120px;margin:0 auto;padding:0 16px}
 .shop > *{position:relative}
 .shop:hover{transform:translateY(-2px)}
 .shop-reverb{background:linear-gradient(180deg,#8fe4ff,#2bb0ee 60%,#1288d6);color:#fff}
+.shop-base{background:linear-gradient(180deg,#c8f7a8,#6fd36b 60%,#3aa94e);color:#fff}
+/* 日本語表示では国内（BASE）を先に、英語表示では海外（Reverb）を先に */
+html[lang="en"] .shop-base{order:2}
 .shop-name{font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.01em}
 .shop-go{font-weight:800}
 .shop-go > span{display:inline-block;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.3)}

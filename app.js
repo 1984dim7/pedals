@@ -4,6 +4,7 @@
 
 // Shop links: fill in when the listings go live. Empty = "Coming soon".
 const LINKS = {
+  base: 'https://dim7.base.shop/items/164100104',   // 国内（BASE）の商品ページ
   reverb: 'https://reverb.com/shop/aeroviewaudio',
 };
 
@@ -40,8 +41,8 @@ const JA = {
   'specs.size.k': '大きさ', 'specs.size.v': '約120 × 65 mm（ノブ・ジャックを除く）',
   'specs.build.k': '製造', 'specs.build.v': '日本で1台ずつ手組み。出荷前に全台を動作検査',
   'specs.tba': '消費電流・高さ・重さは、実測してから追記します。',
-  'buy.title': '購入', 'buy.sub': '1台ずつ、シリアル番号つきで出品します。',
-  'buy.open': 'ショップを開く →', 'buy.soon': '準備中',
+  'buy.title': '購入', 'buy.sub': '日本国内はBASE、海外からはReverbでご購入いただけます。',
+  'buy.open': '海外ショップを開く →', 'buy.soon': '準備中', 'buy.base.open': '国内ショップを開く →',
   'foot.made': '日本で手組み',
   'foot.credits': '音のプレーヤーは回路設計をもとにしたシミュレーションで、実機の録音ではありません。ギターのフレーズは合成音、キャビネットIRはJester Dyne Brutal IR Pack（CC0）。3D：three.js（MIT）。',
   'aria.play': '再生', 'aria.stop': '停止',
@@ -92,7 +93,7 @@ window.WWt = t;
 })();
 
 /* ---------------- shop links ---------------- */
-for (const key of ['reverb']) {
+for (const key of ['base', 'reverb']) {
   const a = document.getElementById('shop-' + key);
   if (LINKS[key]) a.href = LINKS[key];
   else {
